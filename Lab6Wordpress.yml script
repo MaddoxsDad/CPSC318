@@ -2,6 +2,16 @@
 - hosts: localhost
   become: yes  # Run as root
 
+  pre_tasks:
+    # Ensure the required collections are installed
+    - name: Install required Ansible collections
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install community.mysql
+      args:
+        warn: false
+      # Ignore errors if the collection is already installed
+      ignore_errors: true
+
   tasks:
     # 1. Enables EPEL repo
     - name: Install epel-release to enable EPEL repository
